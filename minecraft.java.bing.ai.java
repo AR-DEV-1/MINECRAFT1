@@ -111,3 +111,87 @@ public class MiniMinecraft extends JFrame implements KeyListener {
             moveForward();
         }
         // if the key is A, turn left by 15 degrees
+                if (keyCode == KeyEvent.VK_A) {
+            turnLeft();
+        }
+        // if the key is D, turn right by 15 degrees
+        if (keyCode == KeyEvent.VK_D) {
+            turnRight();
+        }
+        // if the key is S, move backward in the current direction
+        if (keyCode == KeyEvent.VK_S) {
+            moveBackward();
+        }
+        // if the key is SPACE, break the block in front of the player
+        if (keyCode == KeyEvent.VK_SPACE) {
+            breakBlock();
+        }
+        // repaint the graphics
+        repaint();
+    }
+
+    // method to handle key released events
+    public void keyReleased(KeyEvent e) {
+        // do nothing
+    }
+
+    // method to handle key typed events
+    public void keyTyped(KeyEvent e) {
+        // do nothing
+    }
+
+    // method to move forward in the current direction
+    private void moveForward() {
+        // calculate the new position of the player
+        int newX = playerX + (int) (Math.cos(playerDir) * BLOCK_SIZE);
+        int newY = playerY + (int) (Math.sin(playerDir) * BLOCK_SIZE);
+        // check if the new position is within the window bounds and not a solid block
+        if (newX >= 0 && newX < WIDTH && newY >= 0 && newY < HEIGHT && terrain[newX / BLOCK_SIZE][newY / BLOCK_SIZE] == AIR) {
+            // update the player position
+            playerX = newX;
+            playerY = newY;
+        }
+    }
+
+    // method to move backward in the current direction
+    private void moveBackward() {
+        // calculate the new position of the player
+        int newX = playerX - (int) (Math.cos(playerDir) * BLOCK_SIZE);
+        int newY = playerY - (int) (Math.sin(playerDir) * BLOCK_SIZE);
+        // check if the new position is within the window bounds and not a solid block
+        if (newX >= 0 && newX < WIDTH && newY >= 0 && newY < HEIGHT && terrain[newX / BLOCK_SIZE][newY / BLOCK_SIZE] == AIR) {
+            // update the player position
+            playerX = newX;
+            playerY = newY;
+        }
+    }
+
+    // method to turn left by 15 degrees
+    private void turnLeft() {
+        // subtract 15 degrees from the player direction
+        playerDir -= Math.toRadians(15);
+    }
+
+    // method to turn right by 15 degrees
+    private void turnRight() {
+        // add 15 degrees to the player direction
+        playerDir += Math.toRadians(15);
+    }
+
+    // method to break the block in front of the player
+    private void breakBlock() {
+        // calculate the position of the block in front of the player
+        int blockX = playerX + (int) (Math.cos(playerDir) * BLOCK_SIZE);
+        int blockY = playerY + (int) (Math.sin(playerDir) * BLOCK_SIZE);
+        // check if the position is within the window bounds and not air
+        if (blockX >= 0 && blockX < WIDTH && blockY >= 0 && blockY < HEIGHT && terrain[blockX / BLOCK_SIZE][blockY / BLOCK_SIZE] != AIR) {
+            // set the terrain at this position to air
+            terrain[blockX / BLOCK_SIZE][blockY / BLOCK_SIZE] = AIR;
+        }
+    }
+
+    // main method to create an instance of the game
+    public static void main(String[] args) {
+        new MiniMinecraft();
+    }
+}
